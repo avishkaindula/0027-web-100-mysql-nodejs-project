@@ -9,7 +9,9 @@
     <%- include('includes/header') %>
     <main>
       <h1>Add a new post</h1>
-      <form action="..." method="...">
+      <form action="/posts" method="POST">
+        <!-- action is the path of the route that should handle the form submission. -->
+        <!-- we can extract the data attached to this /posts URL through router.post("/posts", ) in blog.js -->
         <div class="form-control">
           <label for="title">Title</label>
           <input type="text" id="title" name="title" required />

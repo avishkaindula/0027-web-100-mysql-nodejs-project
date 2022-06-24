@@ -50,4 +50,46 @@ router.get("/new-post", async function (req, res) {
 // }
 // getAuthorsResult();
 
+router.post("/posts", async function (req, res) {
+  // req.body;
+  // req.body will hold the form data of the /posts request.
+  // req.body is an object with different key-value pairs.
+  // keys are determined by the "name" we assign to the inputs on the form in the create-post.ejs
+  // names on the create-post.ejs => title, summary, content, author_id
+
+  const data = [
+    req.body.title,
+    req.body.summary,
+    req.body.content,
+    req.body.author,
+    // title, summery, content, author are the "names" defined on create-post.ejs
+  ];
+  // this data array holds the data posted through the form.
+  // The order in here matters as that same order passes onto the db.query()
+
+  await db.query(
+    "INSERT INTO posts (title, summery, body, author_id) VALUES (?)",
+    // I've misspelled summary as "summery" inside the MYSQL workbench.
+    // Therefor I also need to misspell it in here.
+    [data]
+  );
+  // "posts" is the name of the table that we want to post the posts.
+  // Inside the parenthesis, we list all the columns which we want to populate.
+  // We don't want to populate id or date columns as they get populated automatically.
+  // the mysql2 package will automatically take the array of values inside [data] and replace the (?) with
+  // that array of values inside [data]
+  // data is an array. So [data] is "an array inside an array."
+
+  // optional===============================================================================
+  // db.query(
+  //   "INSERT INTO posts (title, summery, body, author_id) VALUES (?, ?, ?, ?)",
+  //   [data[0], data[1], data[2], data[3]]
+  // );
+
+  res.redirect("/posts");
+  // since we are in a post route, we should redirect users to another place instead of returning a template.
+});
+// db.query() is an async operation.
+// Therefor, we need to convert it into an sync operation by using "async await."
+
 module.exports = router;
