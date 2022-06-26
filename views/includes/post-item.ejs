@@ -1,7 +1,11 @@
 <article class="post-item">
-  <h2>...</h2>
-  <p class="post-item-author">By ...</p>
-  <p>...</p>
+  <h2><%= post.title %></h2>
+  <p class="post-item-author">By <%= post.author_name %></p>
+  <!-- We've chosen author_name as the alias in the query on the blog.js. so we need to use that name in here. -->
+  <!-- SELECT posts.*, authors.name AS author_name -->
+  <p><%= post.summery %> </p>
+  <!-- I've misspelled summary as "summery" in the mysql workbench. -->
+  <!-- Therefor, we need to misspell it in here to. -->
   <div class="post-actions">
     <button class="btn btn-alt">Delete Post</button>
     <a href="...">Edit Post</a>

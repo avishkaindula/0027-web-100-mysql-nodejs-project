@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <%- include('includes/head', { title: 'All Posts' }) %>
+    <link rel="stylesheet" href="/styles/posts.css" />
+  </head>
 
-<head>
-  <%- include('includes/head', { title: 'All Posts' }) %>
-  <link rel="stylesheet" href="/styles/posts.css">
-</head>
-
-<body>
-  <%- include('includes/header') %>
-  <main id="all-posts">
-    <h1>All Posts</h1>
-   
-  </main> 
-</body>
-
+  <body>
+    <%- include('includes/header') %>
+    <main id="all-posts">
+      <h1>All Posts</h1>
+      <% if (!posts || posts.length === 0) { %>
+        <!-- !posts means it's undefined. (falsy) -->
+        <!-- posts.length === 0 means we do have an array of posts but it's empty. -->
+      <p>No posts found - maybe start creating some?</p>
+      <a class="btn" href="/new-post">Create a new post</a>
+      <!-- This is how we handle "no posts found" errors. -->
+      <% } else { %>
+      <ol id="posts-list">
+        <% for (const post of posts) { %>
+        <!-- posts is the key on the /posts route of blog.js -->
+        <li><%- include("includes/post-item", { post: post }) %></li>
+        <!-- We are using - instead of = before the include keyword. -->
+        <!-- This is so important to remember. I've wasted a big amount of time thanks to this mistake. -->
+        <!-- post : post is a key-value pair -->
+        <!-- The first post is the post that will be exposed in the post-item.ejs file. -->
+        <!-- The second post is the post on the (const post of posts) -->
+        <% } %>
+      </ol>
+      <% } %>
+    </main>
+  </body>
 </html>

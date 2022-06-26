@@ -8,8 +8,23 @@ router.get("/", function (req, res) {
   res.redirect("/posts");
 });
 
-router.get("/posts", function (req, res) {
-  res.render("posts-list");
+router.get("/posts", async function (req, res) {
+  const query = `
+    SELECT posts.*, authors.name AS author_name FROM posts 
+    INNER JOIN authors ON posts.author_id = authors.id
+  `;
+  // This is how we query all the posts from the post table and display them in here.
+  // But the author details are stored in a different table.
+  // Therefor, we need to connect the authors table to the posts table by using author_id
+  // We can improve the readability of our code by using back ticks and split our sql query into two lines like
+  // this and store it in a constant.
+
+  const [posts] = await db.query(query);
+  // array destructuring is used in here.
+
+  res.render("posts-list", { posts: posts });
+  // The first "posts" is the key that will be available in the post-list.ejs template.
+  // The second "posts" is the constant we created as [posts]
 });
 
 router.get("/new-post", async function (req, res) {
@@ -62,7 +77,7 @@ router.post("/posts", async function (req, res) {
     req.body.summary,
     req.body.content,
     req.body.author,
-    // title, summery, content, author are the "names" defined on create-post.ejs
+    // title, summary, content, author are the "names" defined on create-post.ejs
   ];
   // this data array holds the data posted through the form.
   // The order in here matters as that same order passes onto the db.query()
