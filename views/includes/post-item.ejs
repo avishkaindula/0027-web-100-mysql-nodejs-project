@@ -9,6 +9,9 @@
   <div class="post-actions">
     <button class="btn btn-alt">Delete Post</button>
     <a href="...">Edit Post</a>
-    <a class="btn" href="...">View Post</a>
+    <a class="btn" href="/posts/<%= post.id %> ">View Post</a>
+    <!-- We need to create different urls for different posts. -->
+    <!-- We can achieve this by using the already created id of the post -->
+    <!-- So we don't need to use the uuid package in here. -->
   </div>
 </article>

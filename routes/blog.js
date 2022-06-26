@@ -107,4 +107,32 @@ router.post("/posts", async function (req, res) {
 // db.query() is an async operation.
 // Therefor, we need to convert it into an sync operation by using "async await."
 
+router.get("/posts/:id", async function (req, res) {
+  // :id will create dynamic urls for different posts. (we can also use any identifier name instead of "id")
+  const query = `
+    SELECT posts.*, authors.name AS author_name, authors.email AS author_email FROM posts 
+    INNER JOIN authors ON posts.author_id = authors.id
+    WHERE posts.id = ?
+  `;
+  // id defined on the above query is the id on the posts table
+
+  const [posts] = await db.query(query, [req.params.id]);
+  // [req.params.id] => this is how we extract the id from the request sent by clicking the "View Post" button on
+  // the post-item.ejs file.
+  // now the ? on the query will be replaced by this [req.params.id]
+  // mysql2 package will return an "array of posts", but that array holds only one item matching to that id.
+
+  // We need to handle the situation where the users manually enter an id of the post in the URL that doesn't exist.
+  if (!posts || posts.length === 0) {
+    // !posts will handle the situations where the posts is undefined.
+    // posts.length === 0 means we didn't find any posts. (posts.length will give us how many items are there in posts.)
+    return res.status(404).render("404");
+    // We can add a return keyword like this so that the code thereafter won't be executed.
+  }
+
+  res.render("post-detail", { post: posts[0] });
+  // posts[0] => this is how we extract the first and only item of the posts array.
+  // post: is the key which will be exposed to the post-detail.ejs template.
+});
+
 module.exports = router;
