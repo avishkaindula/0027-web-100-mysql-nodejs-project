@@ -130,9 +130,35 @@ router.get("/posts/:id", async function (req, res) {
     // We can add a return keyword like this so that the code thereafter won't be executed.
   }
 
-  res.render("post-detail", { post: posts[0] });
+  const postData = {
+    ...posts[0],
+    // ... is a spread operator.
+    // It will get all the data off the single post into that object.
+    // spread operator ensures that we take all the key value pairs that are part
+    // of this single post object and all those key value pairs are spread out into this object..
+    // Now we can enrich this object with more data.
+    // we can now format the date property inside that posts array like this.
+    date: posts[0].date.toISOString(),
+    // By default DATETIME value inside a database is converted into a JS date object by Mysql2
+    // Therefor we can call date object methods on it like toISOString().
+    // It will convert the date into a standard machine readable string representation.
+    humanReadableDate: posts[0].date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      // We can refer MDN Docs to find out which values support which keys.
+      // toLocaleDateString() will transform the date into a string that is human readable.
+    }),
+  };
+  // This object will hold all the data
+
+  // res.render("post-detail", { post: posts[0] });
+  // });
   // posts[0] => this is how we extract the first and only item of the posts array.
   // post: is the key which will be exposed to the post-detail.ejs template.
+
+  res.render("post-detail", { post: postData });
 });
 
 module.exports = router;
