@@ -3,12 +3,14 @@
   <p class="post-item-author">By <%= post.author_name %></p>
   <!-- We've chosen author_name as the alias in the query on the blog.js. so we need to use that name in here. -->
   <!-- SELECT posts.*, authors.name AS author_name -->
-  <p><%= post.summery %> </p>
+  <p><%= post.summery %></p>
   <!-- I've misspelled summary as "summery" in the mysql workbench. -->
   <!-- Therefor, we need to misspell it in here to. -->
   <div class="post-actions">
     <button class="btn btn-alt">Delete Post</button>
-    <a href="...">Edit Post</a>
+    <a href="/posts/<%= post.id %>/edit">Edit Post</a>
+    <!-- This is the route we created on the blog.js for update-post.ejs -->
+
     <a class="btn" href="/posts/<%= post.id %> ">View Post</a>
     <!-- We need to create different urls for different posts. -->
     <!-- We can achieve this by using the already created id of the post -->
