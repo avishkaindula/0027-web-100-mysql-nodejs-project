@@ -195,4 +195,11 @@ router.post("/posts/:id/edit", async function (req, res) {
   res.redirect("/posts");
 });
 
+router.post("/posts/:id/delete", async function (req, res) {
+  await db.query("DELETE FROM posts WHERE id = ?", [req.params.id]);
+  // Since this is a short query, we can write it like this and assign the id to it.
+  res.redirect("/posts");
+  // after deleting the post, we need to redirect to /posts like this.
+});
+
 module.exports = router;
