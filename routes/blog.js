@@ -177,4 +177,22 @@ router.get("/posts/:id/edit", async function (req, res) {
   // This post key will expose the post's data to update-post.ejs
 });
 
+router.post("/posts/:id/edit", async function (req, res) {
+  const query = `
+    UPDATE posts SET title = ?, summery = ?, body = ?
+    WHERE id = ?
+  `;
+
+  await db.query(query, [
+    req.body.title,
+    req.body.summary,
+    req.body.content,
+    req.params.id,
+  ]);
+  // We need to provide the values inside the [] in the same order as the title, summery, body and id.
+  // body, summary, content are the names we provided on the form on the update-post.ejs
+
+  res.redirect("/posts");
+});
+
 module.exports = router;

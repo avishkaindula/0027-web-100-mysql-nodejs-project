@@ -10,6 +10,12 @@
     <main>
       <h1>Update post</h1>
       <form action="/posts/<%= post.id %>/edit" method="POST">
+        <!-- In order to send user generated data into the database, we need to -->
+        <!-- use the POST method in here. -->
+        <!-- We can send the request to the same path we used to send the load the edit page. -->
+        <!-- But now it's reached with help of a post request which is therefor triggers a different route. -->
+        <!-- (because GET and POST requests don't trigger the same route.) -->
+        <!-- now we can create a router.post() route in the blog,js -->
         <div class="form-control">
           <label for="title">Title</label>
           <input
